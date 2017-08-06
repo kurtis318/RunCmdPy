@@ -37,7 +37,7 @@ class RunCmd:
             # Need to check for no output in stderr.
             #   If no output in stderr, there is one item in list that is null string
             if (self.stderr[0] == ""):
-                self.stderr = 0;
+                self.se_line_count = 0;
                 self.stderr = []
             else:
                 self.se_line_count=len(self.stderr)
@@ -99,13 +99,34 @@ class RunCmd:
         print("{}".format(s))
 
 
-def main():
+def test1():
     c1 = RunCmd()
     c1.run("ls -l /home/kurtis")
     print("<rc={:d}> <so_num_lines={:d}> <se_num_lines={:d}>".format(c1.get_rc,c1.get_num_lines_stdout,c1.get_num_lines_stderr))
-    c1.dump_stdout()
-    c1.dump_stderr()
+    print("\n>>> stdout >>>"); c1.dump_stdout(); print("<<< stdout <<<")
+    print("\n>>> stderr >>>"); c1.dump_stderr(); print("<<< stderr <<<")
+    return 0
+
+def test2():
+    c1 = RunCmd()
+    c1.run("lxddd -l /home/kurtis")
+    print("<rc={:d}> <so_num_lines={:d}> <se_num_lines={:d}>".format(c1.get_rc, c1.get_num_lines_stdout,
+                                                                     c1.get_num_lines_stderr))
+    print("\n>>> stdout >>>"); c1.dump_stdout(); print("<<< stdout <<<")
+    print("\n>>> stderr >>>"); c1.dump_stderr(); print("<<< stderr <<<")
+
+    # Iterate through stdout getting file name
+
+
+
+    return(0);
+
+def main():
+    test1()
+    test2()
+    return(0);
 
 if __name__ == "__main__":
     # execute only if run as a script
     main()
+    exit(0)
