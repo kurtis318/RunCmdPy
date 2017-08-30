@@ -1,9 +1,12 @@
 #!/usr/bin/python
 
 from subprocess import Popen, PIPE
-
+import datetime
 
 class RunCmd:
+    DEBUG_MODE  = "D"
+    NORMAL_MODE = "N"
+
     def __init__(self):
         """
             Constructor for RunCmd object.
@@ -18,7 +21,7 @@ class RunCmd:
         self.good_cmds = []
         self.bad_cmds = []
 
-    def run(self, cmd):
+    def run(self, cmd, mode=NORMAL_MODE):
         """
         Run a command and capture stdout, stderr and return code.
 
@@ -29,7 +32,8 @@ class RunCmd:
 
         if len(cmd) > 0:
             self.cmd = cmd
-            print("Running <cmd=%s>" % self.cmd)
+            if mode == RunCmd.DEBUG_MODE:
+                print("Running <cmd=%s>" % self.cmd)
 
             p = Popen(self.cmd, shell=True, stdout=PIPE, stderr=PIPE)
             self.rc = p.wait()
@@ -51,10 +55,20 @@ class RunCmd:
                 self.bad_cmds.append(cmd)
 
         else:
-            print("Comand string is empty")
-            return 1
+            self.rc=254
+            if mode == RunCmd.DEBUG_MODE:
+                print("Comand string is empty")
+            return self.rc
 
         return self.rc
+
+    def elaspe_time_run(self,cmd, mode=NORMAL_MODE):
+
+        startt = datetime.datetime.now()
+        self.run(cmd,mode)
+        stopt = datetime.datetime.now()
+
+        return (stopt-startt).microseconds
 
     @property
     def get_cmd(self):
@@ -185,7 +199,7 @@ def test3():
 def main():
     #    test1()
     #    test2()
-    cmd = test3()
+    test3()
 
     return 0
 
