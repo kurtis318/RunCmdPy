@@ -3,8 +3,9 @@
 from subprocess import Popen, PIPE
 import datetime
 
+
 class RunCmd:
-    DEBUG_MODE  = "D"
+    DEBUG_MODE = "D"
     NORMAL_MODE = "N"
 
     def __init__(self):
@@ -55,17 +56,17 @@ class RunCmd:
                 self.bad_cmds.append(cmd)
 
         else:
-            self.rc=254
+            self.rc = 254
             if mode == RunCmd.DEBUG_MODE:
                 print("Comand string is empty")
             return self.rc
 
         return self.rc
 
-    def elaspe_time_run(self,cmd, mode=NORMAL_MODE):
+    def elaspe_time_run(self, cmd, mode=NORMAL_MODE):
 
         startt = datetime.datetime.now()
-        self.run(cmd,mode)
+        self.run(cmd, mode)
         stopt = datetime.datetime.now()
 
         return (stopt-startt).microseconds
@@ -136,6 +137,21 @@ class RunCmd:
     def dump_stderr(self):
         s = self.list_as_string(self.stderr)
         print("{}".format(s))
+
+
+def ms_2_human_readable(self, ms):
+    """
+    This converts micro-seconds to ms/sec/mn/hrs string.
+        Example:    "3000 ms/30.00 sec/0.50 min/xx.yy hrs"
+
+    :param ms: micro-seconds
+    :return: human readable ms/sec/min/hrs string
+    """
+    secs = ms/100
+    mins = secs/60
+    hrs = mins/60
+
+    return "{0:.2f} ms/{1:.2f} sec/{2:.2f} min/{3:.2f} hrs".format(ms, secs, mins,hrs)
 
 
 def test1():
