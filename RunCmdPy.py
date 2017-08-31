@@ -69,12 +69,12 @@ class RunCmd:
         self.run(cmd, mode)
         stopt = datetime.datetime.now()
 
-        return (stopt-startt).microseconds
+        return (stopt - startt).microseconds
 
     @property
     def get_cmd(self):
         """
-        Returns the value passed to run() command.
+        Returns the value passed to run() command
         :return:    command just executed
         :rtype:     basestring
         """
@@ -139,19 +139,19 @@ class RunCmd:
         print("{}".format(s))
 
 
-def ms_2_human_readable(self, ms):
-    """
-    This converts micro-seconds to ms/sec/mn/hrs string.
-        Example:    "3000 ms/30.00 sec/0.50 min/xx.yy hrs"
+    def ms_2_human_readable(self, ms):
+        """
+        This converts micro-seconds to ms/sec/mn/hrs string.
+            Example:    "3000 ms/30.00 sec/0.50 min/xx.yy hrs"
 
-    :param ms: micro-seconds
-    :return: human readable ms/sec/min/hrs string
-    """
-    secs = ms/100
-    mins = secs/60
-    hrs = mins/60
+        :param ms: micro-seconds
+        :return: human readable ms/sec/min/hrs string
+        """
+        secs = ms / 100
+        mins = secs / 60
+        hrs = mins / 60
 
-    return "{0:.2f} ms/{1:.2f} sec/{2:.2f} min/{3:.2f} hrs".format(ms, secs, mins,hrs)
+        return "{0:.2f} ms/{1:.2f} sec/{2:.2f} min/{3:.2f} hrs".format(ms, secs, mins, hrs)
 
 
 def test1():
