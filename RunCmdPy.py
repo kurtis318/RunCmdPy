@@ -2,6 +2,7 @@
 
 from subprocess import Popen, PIPE
 import datetime
+from gtk._gtk import DEBUG_MODULES
 
 
 class RunCmd:
@@ -10,7 +11,7 @@ class RunCmd:
 
     def __init__(self):
         """
-            Constructor for RunCmd object.
+            Constructor for RunCmd object. KWR
         """
 
         self.cmd = ""
@@ -34,7 +35,8 @@ class RunCmd:
         if len(cmd) > 0:
             self.cmd = cmd
             if mode == RunCmd.DEBUG_MODE:
-                print("Running <cmd=%s>" % self.cmd)
+                print("<mode={}> <cmd={}>".format(mode, self.cmd))
+                return
 
             p = Popen(self.cmd, shell=True, stdout=PIPE, stderr=PIPE)
             self.rc = p.wait()
@@ -65,11 +67,18 @@ class RunCmd:
 
     def elaspe_time_run(self, cmd, mode=NORMAL_MODE):
 
-        startt = datetime.datetime.now()
+        startt = stopt = 0
+        
+        if mode == RunCmd.NORMAL_MODE:
+            startt = datetime.datetime.now()
+            
         self.run(cmd, mode)
-        stopt = datetime.datetime.now()
-
-        return (stopt - startt).microseconds
+        
+        if mode == RunCmd.NORMAL_MODE:
+            stopt = datetime.datetime.now()
+            return (stopt - startt).microseconds
+        else:
+            return 0
 
     @property
     def get_cmd(self):
