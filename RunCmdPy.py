@@ -34,8 +34,13 @@ class RunCmd:
 
         if len(cmd) > 0:
             self.cmd = cmd
+            self.so_line_count = 0
+            self.se_line_count = 0
+            self.stderr = []
+            self.stdout = []
             if mode == RunCmd.DEBUG_MODE:
                 print("<mode={}> <cmd={}>".format(mode, self.cmd))
+                self.rc = 0
                 return
 
             p = Popen(self.cmd, shell=True, stdout=PIPE, stderr=PIPE)
