@@ -2,7 +2,7 @@
 
 from subprocess import Popen, PIPE
 import datetime
-from gtk._gtk import DEBUG_MODULES
+
 
 
 class RunCmd:
@@ -71,17 +71,15 @@ class RunCmd:
         return self.rc
 
     def elaspe_time_run(self, cmd, mode=NORMAL_MODE):
-
-        startt = stopt = 0
         
-        if mode == RunCmd.NORMAL_MODE:
-            startt = datetime.datetime.now()
+        startt = stopt = datetime.datetime.now()
             
         self.run(cmd, mode)
         
         if mode == RunCmd.NORMAL_MODE:
             stopt = datetime.datetime.now()
-            return (stopt - startt).microseconds
+            diff = stopt - startt
+            return diff.total_seconds() * 1000
         else:
             return 0
 
@@ -156,12 +154,12 @@ class RunCmd:
     def ms_2_human_readable(self, ms):
         """
         This converts micro-seconds to ms/sec/mn/hrs string.
-            Example:    "3000 ms/30.00 sec/0.50 min/xx.yy hrs"
+            Example:    "3000 ms/3.00 sec/0.50 min/xx.yy hrs"
 
         :param ms: micro-seconds
         :return: human readable ms/sec/min/hrs string
         """
-        secs = ms / 100
+        secs = ms / 1000
         mins = secs / 60
         hrs = mins / 60
 
