@@ -157,8 +157,7 @@ class RunCmd:
         n = 0
         retstr = ""
         for item in alist:
-            # repr() is needed because output is "b'somethind'".  Python 3 causes this???
-            retstr += "{:>4}:<{}><{}>\n".format(n, type(item), repr(item)[3:-1])
+            retstr += "{:>4}:<{}>\n".format(n, item)
             n += 1
         return retstr
 
