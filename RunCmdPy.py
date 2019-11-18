@@ -45,15 +45,18 @@ class RunCmd:
 
             p = Popen(self.cmd, shell=True, stdout=PIPE, stderr=PIPE)
             self.rc = p.wait()
-            self.stdout, self.stderr = p.communicate()            
-            # self.stdout = self.stdout.rstrip().split('\n')
-            self.stdout = str(self.stdout.rstrip()).split('\n')
+            self.stdout, self.stderr = p.communicate()
+            
+            # Python 3 did not recognize '\n'.  Also removed .rstrip()
+            self.stdout = str(self.stdout).split('\\n')
             self.so_line_count = len(self.stdout)
-            # self.stderr = self.stderr.rstrip().split('\n')
-            self.stderr = str(self.stderr.rstrip()).split('\n')
-
-            # Need to check for no output in stderr.
+            self.stderr = str(self.stderr).split('\\n')
+            self.se_line_count = len(self.stderr)
+            
+            # 
+            #  Need to check for no output in stderr.
             #   If no output in stderr, there is one item in list that is null string
+            
             if self.stderr[0] == "":
                 self.se_line_count = 0
                 self.stderr = []
@@ -63,12 +66,11 @@ class RunCmd:
                 self.good_cmds.append(cmd)
             else:
                 self.bad_cmds.append(cmd)
-
         else:
             self.rc = 254
             if mode == RunCmd.DEBUG_MODE:
                 print("Comand string is empty")
-            return self.rc
+                return self.rc
 
         return self.rc
 
