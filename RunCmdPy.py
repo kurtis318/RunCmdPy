@@ -47,10 +47,25 @@ class RunCmd:
             self.rc = p.wait()
             self.stdout, self.stderr = p.communicate()
             
-            # Python 3 did not recognize '\n'.  Also removed .rstrip()
-            self.stdout = str(self.stdout).split('\\n')
+            # print('>>> DBUG: <stdout={}/{}>'.format(self.stdout.decode("utf-8") , type(self.stdout)))
+            
+            # Python 3 has stdout and stderr as <class btytes> need to decode them.
+            self.stdout = self.stdout.decode("utf-8").split('\n')
+            
+            # Need to check for empty string as element of list.
+            list_len = len(self.stdout)
+            if list_len > 1 and len(self.stdout[-1]) == 0:
+                # Last element is null string so remove it.
+                self.stdout = self.stdout[: list_len - 1] 
+            # Recalculate number of elements in list now.
             self.so_line_count = len(self.stdout)
-            self.stderr = str(self.stderr).split('\\n')
+            
+            self.stderr = self.stderr.decode("utf-8").split('\n')
+            list_len = len(self.stderr)
+            if list_len > 1 and len(self.stderr[-1]) == 0:
+                # Last element is null string so remove it.
+                self.stderr = self.stderr[: list_len - 1] 
+            # Recalculate number of elements in list now.
             self.se_line_count = len(self.stderr)
             
             # 
@@ -142,7 +157,8 @@ class RunCmd:
         n = 0
         retstr = ""
         for item in alist:
-            retstr += "{:>4}:<{}>\n".format(n, item)
+            # repr() is needed because output is "b'somethind'".  Python 3 causes this???
+            retstr += "{:>4}:<{}><{}>\n".format(n, type(item), repr(item)[3:-1])
             n += 1
         return retstr
 
